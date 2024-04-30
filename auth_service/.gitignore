@@ -1,0 +1,72 @@
+# Binary executables
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# IDE
+.idea
+*.swp
+*.swo
+*.sublime-workspace
+
+/bin
+/dist
+
+
+# Go compiled objects
+*.o
+*.a
+
+# Go test cache
+_test/
+
+# Go build directories
+obj/
+test2json/
+
+# Go output artifacts
+*.cgo1.go
+*.cgo2.c
+_cgo_defun.c
+_cgo_gotypes.go
+_cgo_export.*
+
+# Go package output
+#pkg/
+
+# Go module cache files
+Gopkg.lock
+go.sum
+
+# Dependency management files
+/vendor/
+Gopkg.toml
+
+# VSCode metadata
+.vscode/
+
+# Editor configuration files
+*.swp
+*.swo
+*.sublime-workspace
+
+# macOS metadata
+.DS_Store
+
+# Tool configuration and log files
+*.log
+
+# Environment configuration files
+*.env
+*.env.local
+
+# Migration files
+/migrations/*.sql
+
+# Temporary files that might appear during development
+*.tmp
+*.temp
+*.tbd
+
