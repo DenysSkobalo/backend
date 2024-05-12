@@ -38,3 +38,23 @@ func (repo *UserRepository) CreateUser(u *models.User) error {
 	}
 	return nil
 }
+
+func (repo *UserRepository) GetUserByUsername(username string) (*models.User, error) {
+	const query = `SELECT * FROM users WHERE username = $1`
+	var user models.User
+	err := repo.DB.QueryRow(query, username).Scan(&user.ID, &user.Username, &user.Email, &user.PasswordHash, &user.FirstName, &user.LastName, &user.CreatedAt)
+	if err != nil {
+		return nil, err
+	}
+	return &user, nil
+}
+
+func (repo *UserRepository) GetUserByEmail(email string) (*models.User, error) {
+	const query = `SELECT * FROM users WHERE email = $1`
+	var user models.User
+	err := repo.DB.QueryRow(query, email).Scan(&user.ID, &user.Username, &user.Email, &user.PasswordHash, &user.FirstName, &user.LastName, &user.CreatedAt)
+	if err != nil {
+		return nil, err
+	}
+	return &user, nil
+}
