@@ -3,9 +3,11 @@ package handlers
 import (
 	"auth_service/internal/database/repositories"
 	"auth_service/pkg/models"
+	"auth_service/pkg/utils"
 	"database/sql"
 	"errors"
 	"github.com/gin-gonic/gin"
+	"golang.org/x/crypto/bcrypt"
 	"net/http"
 )
 
@@ -30,12 +32,12 @@ func SignUp(userRepo *repositories.UserRepository) gin.HandlerFunc {
 		}
 
 		// Checking for existing user by username
-		if err := checkExistingUsername(userRepo, newUser.Username, c); err != nil {
+		if err := utils.CheckExistingUsername(userRepo, newUser.Username, c); err != nil {
 			return
 		}
 
 		// Checking for existing user by email
-		if err := checkExistingEmail(userRepo, newUser.Email, c); err != nil {
+		if err := utils.CheckExistingEmail(userRepo, newUser.Email, c); err != nil {
 			return
 		}
 
@@ -49,28 +51,29 @@ func SignUp(userRepo *repositories.UserRepository) gin.HandlerFunc {
 	}
 }
 
-func checkExistingUsername(userRepo *repositories.UserRepository, username string, c *gin.Context) error {
-	existingUser, err := userRepo.GetUserByUsername(username)
-	if err != nil && !errors.Is(err, sql.ErrNoRows) {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to check existing user"})
-		return err
-	}
-	if existingUser != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Username already exists"})
-		return errors.New("username already exists")
-	}
-	return nil
-}
+func Login(userRepo *repositories.UserRepository) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		var loginUser models.User
+		if err := c.ShouldBindJSON(&loginUser); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid data provided"})
+			return
+		}
 
-func checkExistingEmail(userRepo *repositories.UserRepository, email string, c *gin.Context) error {
-	existingEmailUser, err := userRepo.GetUserByEmail(email)
-	if err != nil && !errors.Is(err, sql.ErrNoRows) {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to check existing user"})
-		return err
+		dbUser, err := userRepo.GetUserByUsername(loginUser.Username)
+		if err != nil {
+			if errors.Is(err, sql.ErrNoRows) {
+				c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid username or password"})
+				return
+			}
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to retrieve user"})
+			return
+		}
+
+		if err := bcrypt.CompareHashAndPassword([]byte(dbUser.Password), []byte(loginUser.Password)); err != nil {
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid username or password"})
+			return
+		}
+
+		c.JSON(http.StatusOK, gin.H{"message": "User authenticated successfully"})
 	}
-	if existingEmailUser != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Email already exists"})
-		return errors.New("email already exists")
-	}
-	return nil
 }

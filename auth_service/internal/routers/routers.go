@@ -10,6 +10,7 @@ func SetupRoutes(router *gin.Engine, repos *repositories.Repositories) {
 	router.GET("/", handlers.HandleRoot)
 
 	router.POST("/signup", handlers.SignUp(repos.UserRepo))
+	router.POST("/login", handlers.Login(repos.UserRepo))
 
 	// Add others routers
 }
