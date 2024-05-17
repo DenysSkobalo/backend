@@ -11,7 +11,7 @@ import (
 	"net/http"
 )
 
-func Login(userRepo *repositories.UserRepository) gin.HandlerFunc {
+func SignIn(userRepo *repositories.UserRepository) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var loginUser models.User
 		if err := c.ShouldBindJSON(&loginUser); err != nil {
