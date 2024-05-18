@@ -3,10 +3,9 @@ package middlewares
 import (
 	"auth_service/pkg/utils"
 	"github.com/dgrijalva/jwt-go"
+	"github.com/gin-gonic/gin"
 	"net/http"
 	"strings"
-
-	"github.com/gin-gonic/gin"
 )
 
 func JWTMiddleware() gin.HandlerFunc {

@@ -6,8 +6,14 @@ import (
 	"log"
 )
 
+type UserRepository interface {
+	CreateUser(u *models.User) error
+	GetUserByUsername(username string) (*models.User, error)
+	GetUserByEmail(email string) (*models.User, error)
+}
+
 type Repositories struct {
-	UserRepo *UserRepository
+	UserRepo UserRepository
 }
 
 func NewRepositories(db *sql.DB) *Repositories {
@@ -16,15 +22,15 @@ func NewRepositories(db *sql.DB) *Repositories {
 	}
 }
 
-type UserRepository struct {
+type SQLUserRepository struct {
 	DB *sql.DB
 }
 
-func NewUserRepository(db *sql.DB) *UserRepository {
-	return &UserRepository{DB: db}
+func NewUserRepository(db *sql.DB) *SQLUserRepository {
+	return &SQLUserRepository{DB: db}
 }
 
-func (repo *UserRepository) CreateUser(u *models.User) error {
+func (repo *SQLUserRepository) CreateUser(u *models.User) error {
 	if err := u.Validate(); err != nil {
 		return err
 	}
@@ -43,7 +49,7 @@ func (repo *UserRepository) CreateUser(u *models.User) error {
 	return nil
 }
 
-func (repo *UserRepository) GetUserByUsername(username string) (*models.User, error) {
+func (repo *SQLUserRepository) GetUserByUsername(username string) (*models.User, error) {
 	const query = `SELECT * FROM users WHERE username = $1`
 	var user models.User
 	err := repo.DB.QueryRow(query, username).Scan(&user.ID, &user.Username, &user.Email, &user.Password, &user.FirstName, &user.LastName, &user.CreatedAt)
@@ -53,7 +59,7 @@ func (repo *UserRepository) GetUserByUsername(username string) (*models.User, er
 	return &user, nil
 }
 
-func (repo *UserRepository) GetUserByEmail(email string) (*models.User, error) {
+func (repo *SQLUserRepository) GetUserByEmail(email string) (*models.User, error) {
 	const query = `SELECT * FROM users WHERE email = $1`
 	var user models.User
 	err := repo.DB.QueryRow(query, email).Scan(&user.ID, &user.Username, &user.Email, &user.Password, &user.FirstName, &user.LastName, &user.CreatedAt)

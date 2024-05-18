@@ -1,5 +1,3 @@
-// utils/jwt_utils.go
-
 package utils
 
 import (

@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-func SignUp(userRepo *repositories.UserRepository) gin.HandlerFunc {
+func SignUp(userRepo repositories.UserRepository) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var newUser models.User
 		if err := c.ShouldBindJSON(&newUser); err != nil {

@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-func CheckExistingUsername(userRepo *repositories.UserRepository, username string, c *gin.Context) error {
+func CheckExistingUsername(userRepo repositories.UserRepository, username string, c *gin.Context) error {
 	existingUser, err := userRepo.GetUserByUsername(username)
 	if err != nil && !errors.Is(err, sql.ErrNoRows) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to check existing user"})
@@ -21,7 +21,7 @@ func CheckExistingUsername(userRepo *repositories.UserRepository, username strin
 	return nil
 }
 
-func CheckExistingEmail(userRepo *repositories.UserRepository, email string, c *gin.Context) error {
+func CheckExistingEmail(userRepo repositories.UserRepository, email string, c *gin.Context) error {
 	existingEmailUser, err := userRepo.GetUserByEmail(email)
 	if err != nil && !errors.Is(err, sql.ErrNoRows) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to check existing user"})
