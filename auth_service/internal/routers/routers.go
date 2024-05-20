@@ -14,7 +14,7 @@ func SetupRoutes(router *gin.Engine, repos *repositories.Repositories) {
 	router.GET("/protected/resource", middlewares.JWTMiddleware(), handlers.ProtectedResource)
 
 	router.POST("/signup", handlers.SignUp(repos.UserRepo))
-	router.POST("/login", handlers.Login(repos.UserRepo))
+	router.POST("/signin", handlers.SignIn(repos.UserRepo))
 
 	// Add others routers
 }

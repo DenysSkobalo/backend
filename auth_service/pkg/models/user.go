@@ -7,14 +7,16 @@ import (
 )
 
 type User struct {
-	ID                int64  `json:"id"`
-	Username          string `json:"username"`
-	Email             string `json:"email"`
-	Password          string `json:"password"`
-	ConfirmedPassword string `json:"confirmed_password"`
-	FirstName         string `json:"first_name"`
-	LastName          string `json:"last_name"`
-	CreatedAt         string `json:"created_at"`
+	ID                int64        `json:"id"`
+	Username          string       `json:"username"`
+	Email             string       `json:"email"`
+	Password          string       `json:"password"`
+	ConfirmedPassword string       `json:"confirmed_password"`
+	FirstName         string       `json:"first_name"`
+	LastName          string       `json:"last_name"`
+	Roles             []Role       `json:"roles"`
+	Permissions       []Permission `json:"permissions"`
+	CreatedAt         string       `json:"created_at"`
 }
 
 func (u *User) Validate() error {
