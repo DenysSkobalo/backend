@@ -1,7 +1,7 @@
 package repositories
 
 import (
-	"auth_service/pkg/models"
+	"auth_service/internal/api/models"
 	"database/sql"
 	"log"
 )

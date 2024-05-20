@@ -1,8 +1,8 @@
 package handlers
 
 import (
+	"auth_service/internal/api/models"
 	"auth_service/internal/database/repositories"
-	"auth_service/pkg/models"
 	"auth_service/pkg/utils"
 	"github.com/gin-gonic/gin"
 	"net/http"

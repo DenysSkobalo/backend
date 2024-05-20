@@ -1,9 +1,9 @@
 package main
 
 import (
+	"auth_service/internal/api/routers"
 	"auth_service/internal/database"
 	"auth_service/internal/database/repositories"
-	"auth_service/internal/routers"
 	"auth_service/internal/server"
 	"errors"
 	"github.com/sirupsen/logrus"
