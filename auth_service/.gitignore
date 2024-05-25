@@ -63,7 +63,7 @@ Gopkg.toml
 *.env.local
 
 # Migration files
-/migrations/*.sql
+#/migrations/*.sql
 
 # Temporary files that might appear during development
 *.tmp
