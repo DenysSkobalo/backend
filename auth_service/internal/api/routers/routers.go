@@ -13,8 +13,8 @@ func SetupRoutes(router *gin.Engine, repos *repositories.Repositories) {
 	// Adds routes protected by middleware
 	router.GET("/protected/resource", middlewares.JWTMiddleware(), handlers2.ProtectedResource)
 
-	router.POST("/signup", handlers2.SignUp(repos.UserRepo))
-	router.POST("/signin", handlers2.SignIn(repos.UserRepo))
+	router.POST("/accounts/signup", handlers2.SignUp(repos.UserRepo))
+	router.POST("/accounts/login", handlers2.SignIn(repos.UserRepo))
 
 	// Add others routers
 }
